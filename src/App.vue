@@ -1,28 +1,14 @@
 <template>
 <h1>Memo App</h1>
 <ItemList />
-<!-- <span v-if="showEdit">
-  <EditItem />
-</span> -->
 </template>
 
 <script>
 import ItemList from './components/ItemList.vue'
-// import EditItem from './components/EditItem.vue'
 
 export default {
   name: 'App',
   components: { ItemList },
-  // data() {
-  //   return {
-  //     showEdit: false
-  //   }
-  // },
-  // methods: {
-  //   openEditArea() {
-  //    this.showEdit = true
-  //   }
-  // }
 }
 </script>
 
