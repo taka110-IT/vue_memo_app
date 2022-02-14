@@ -1,28 +1,59 @@
 <template>
   <ul>
-    <li v-for="item in items" :key="item.id">
-      <p @click="edit">{{ firstLine(item.body) }}</p>
+    <li v-for="(item, index) in items" :key="item.id">
+      <p @click="editMemo(index)">{{ firstLine(item.body) }}</p>
     </li>
     <li @click="newMemo">＋</li>
   </ul>
+  <form @submit.prevent="setMemo" v-if="showEditForm">
+    <textarea name="body" cols="40" rows="15" v-model="body"></textarea>
+    <input type="submit" value="編集">
+    <input type="button" value="削除" @click="deleteMemo(editIndex)">
+  </form>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      items: [{id: 1, body: `memo1\nmemo1\nmemo1`},
-              {id: 2, body: `memo2\nmemo2\nmemo2`},
-              {id: 3, body: `memo3\nmemo3\nmemo3`}]
+      items: [],
+      body: '',
+      editIndex: '',
+      showEditForm: false
     }
   },
+  mounted() {
+    this.items = JSON.parse(localStorage.getItem('items')) || []
+  },
   methods: {
-    edit() {
-      console.log('edit clicked!')
+    editMemo(index) {
+      this.body = this.items[index].body
+      this.editIndex = index
+      this.showEditForm = true
     },
     newMemo() {
-      this.items.push({id:4, body: `新規メモ`})
-      this.$emit('editArea')
+      this.items.push({id: Date.now(), body: `新規メモ`})
+      this.editIndex = this.items.length - 1
+      this.body = this.items[this.editIndex].body
+      this.showEditForm = true
+    },
+    setMemo() {
+      if (this.body) {
+        this.items[this.editIndex].body = this.body
+        localStorage.setItem('items', JSON.stringify(this.items))
+      }
+      this.body = ''
+      this.editIndex = ''
+      this.showEditForm = false
+    },
+    deleteMemo(editIndex) {
+      if (confirm('削除しますか？')) {
+        this.items.splice(editIndex, 1)
+        localStorage.setItem('items', JSON.stringify(this.items))
+        this.body = ''
+        this.editIndex = ''
+        this.showEditForm = false
+      }
     }
   },
   computed: {
@@ -57,5 +88,19 @@ li:hover {
 
 p {
   margin: 0;
+}
+
+form {
+  display: inline-block;
+}
+
+textarea {
+  margin: 10px 20px;
+  display: block;
+}
+
+input {
+  margin: 10px 0 0 20px;
+  width: 75px;
 }
 </style>
