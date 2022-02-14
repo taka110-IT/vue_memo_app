@@ -1,14 +1,28 @@
 <template>
 <h1>Memo App</h1>
-<ItemList />
+<ItemList @editArea="openEditArea" />
+<span v-if="showEdit">
+  <EditItem />
+</span>
 </template>
 
 <script>
 import ItemList from './components/ItemList.vue'
+import EditItem from './components/EditItem.vue'
 
 export default {
   name: 'App',
-  components: { ItemList }
+  components: { ItemList, EditItem },
+  data() {
+    return {
+      showEdit: false
+    }
+  },
+  methods: {
+    openEditArea() {
+     this.showEdit = true
+    }
+  }
 }
 </script>
 
@@ -17,8 +31,14 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  text-align: left;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 20px;
+  background: white;
+  width: 100%;
+  height: 600px;
+}
+body {
+  background: gainsboro;
 }
 </style>

@@ -3,7 +3,7 @@
     <li v-for="item in items" :key="item.id">
       <p @click="edit">{{ firstLine(item.body) }}</p>
     </li>
-    <li @click="edit">＋</li>
+    <li @click="newMemo">＋</li>
   </ul>
 </template>
 
@@ -19,6 +19,10 @@ export default {
   methods: {
     edit() {
       console.log('edit clicked!')
+    },
+    newMemo() {
+      this.items.push({id:4, body: `新規メモ`})
+      this.$emit('editArea')
     }
   },
   computed: {
@@ -32,12 +36,26 @@ export default {
 </script>
 
 <style>
+ul {
+  width: 300px;
+  padding-inline-start: 20px;
+  display: inline-block;
+  vertical-align: top;
+  margin: 0;
+}
+
 li {
   list-style-type: none;
   text-decoration: underline;
+  padding: 5px 0;
 }
+
 li:hover {
   color: blue;
   cursor: pointer;
+}
+
+p {
+  margin: 0;
 }
 </style>
