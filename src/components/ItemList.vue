@@ -19,7 +19,6 @@ export default {
       items: [],
       body: '',
       editIndex: '',
-      showEditForm: false
     }
   },
   mounted() {
@@ -29,13 +28,11 @@ export default {
     editMemo(index) {
       this.body = this.items[index].body
       this.editIndex = index
-      this.showEditForm = true
     },
     newMemo() {
       this.items.push({id: Date.now(), body: `新規メモ`})
       this.editIndex = this.items.length - 1
       this.body = this.items[this.editIndex].body
-      this.showEditForm = true
     },
     setMemo() {
       if (this.body) {
@@ -44,7 +41,6 @@ export default {
       }
       this.body = ''
       this.editIndex = ''
-      this.showEditForm = false
     },
     deleteMemo(editIndex) {
       if (confirm('削除しますか？')) {
@@ -52,7 +48,6 @@ export default {
         localStorage.setItem('items', JSON.stringify(this.items))
         this.body = ''
         this.editIndex = ''
-        this.showEditForm = false
       }
     }
   },
@@ -61,6 +56,9 @@ export default {
       return function(body) {
         return String(body.split('\n', 1))
       }
+    },
+    showEditForm() {
+      return this.editIndex !== ''
     }
   }
 }
